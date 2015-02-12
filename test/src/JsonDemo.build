@@ -1,0 +1,20 @@
+{
+    "name": "JsonDemo",
+    "version": "1.0",
+    "executable": true,
+    "outputDir": "bin",
+    "references": [
+        "System",
+        "Loom",
+        "Json"
+    ],
+    "modules": [
+        {
+            "name": "JsonDemo",
+            "version": "1.0",
+            "sourcePath": [
+                "demo"
+            ]
+        }
+    ]
+}

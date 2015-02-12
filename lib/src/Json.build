@@ -1,0 +1,17 @@
+{
+    "name": "Json",
+    "version": "1.0",
+    "outputDir": "./build",
+    "references": [
+        "System"
+    ],
+    "modules": [
+        {
+            "name": "Json",
+            "version": "1.0",
+            "sourcePath": [
+                "."
+            ]
+        }
+    ]
+}
