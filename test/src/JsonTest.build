@@ -1,0 +1,21 @@
+{
+    "name": "JsonTest",
+    "version": "1.0",
+    "executable": true,
+    "outputDir": "bin",
+    "references": [
+        "System",
+        "Spec",
+        "Json"
+    ],
+    "modules": [
+        {
+            "name": "JsonTest",
+            "version": "1.0",
+            "sourcePath": [
+                "app",
+                "spec"
+            ]
+        }
+    ]
+}
