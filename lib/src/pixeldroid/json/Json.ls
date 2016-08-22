@@ -66,7 +66,7 @@ package pixeldroid.json
                 default :
                     if (item.hasOwnProperty('toJson'))
                     {
-                        var method:MethodInfo = item.getType().getMethodInfo('toJson');
+                        var method:MethodInfo = item.getType().getMethodInfoByName('toJson');
                         if (method) json = method.invokeSingle(item, null) as Json;
                     }
                 break;
