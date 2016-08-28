@@ -82,7 +82,6 @@ trace(j.getArray('key').getArrayObject(2).getArray('r').getArrayNumber(1));
 
 #### Using `pixeldroid.json.Json`
 
-
 ```ls
 var jsonString:String = File.loadTextFile('assets/json.json');
 var j:Json = Json.fromString(jsonString);
