@@ -6,7 +6,7 @@ package pixeldroid.json
 
     public class Json
     {
-        public static const version:String = '0.0.1';
+        public static const version:String = '0.0.2';
 
         static public function fromString(value:String):Json
         {
@@ -66,7 +66,7 @@ package pixeldroid.json
                 default :
                     if (item.hasOwnProperty('toJson'))
                     {
-                        var method:MethodInfo = item.getType().getMethodInfo('toJson');
+                        var method:MethodInfo = item.getType().getMethodInfoByName('toJson');
                         if (method) json = method.invokeSingle(item, null) as Json;
                     }
                 break;
