@@ -10,6 +10,12 @@ package
 
         public static function describe():void
         {
+            var it:Thing = Spec.describe('Json');
+
+            it.should('be versioned', function() {
+                it.expects(Json.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
+            });
+
             describeFromString();
             describeFromObject();
         }
