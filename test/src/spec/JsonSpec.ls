@@ -5,38 +5,48 @@ package
 
     import pixeldroid.json.Json;
 
+
     public static class JsonSpec
     {
+        private static const it:Thing = Spec.describe('Json');
 
         public static function describe():void
         {
-            var it:Thing = Spec.describe('Json');
-
-            it.should('be versioned', function() {
-                it.expects(Json.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
-            });
-
-            describeFromString();
-            describeFromObject();
+            it.should('be versioned', be_versioned);
+            it.should('initialize from a valid JSON string', init_from_string);
+            it.should('initialize from a native Loom object', init_from_object);
         }
 
 
-        private static function describeFromString():void
+        private static var json:Json;
+
+        private static function describeValidInstance():void
+        {
+            it.should('report the native Loom type each value can be extracted as', report_native_types);
+            it.should('retrieve native Loom types for the non-collection JSON types', get_native_types);
+            it.should('retrieve array elements via items[]', get_array_elements_via_items);
+            it.should('retrieve object properties via keys[]', get_object_props_via_keys);
+        }
+
+
+        private static function be_versioned():void
+        {
+            it.expects(Json.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
+        }
+
+        private static function init_from_string():void
         {
             var jsonFile:String = 'fixtures/json.json';
             var jsonString:String = File.loadTextFile(jsonFile);
 
-            var it:Thing = Spec.describe('Json from String');
-            var json:Json = Json.fromString(jsonString);
+            json = null;
+            json = Json.fromString(jsonString);
 
-            it.should('initialize from a valid JSON string', function() {
-                it.expects(json).not.toBeNull();
-            });
-
-            validate(it, json);
+            it.expects(json).not.toBeNull();
+            describeValidInstance();
         }
 
-        private static function describeFromObject():void
+        private static function init_from_object():void
         {
             var jsonObject:Dictionary.<String, Object> = {};
 
@@ -62,55 +72,54 @@ package
                 "nested_4": true
             };
 
-            var it:Thing = Spec.describe('Json from Object');
-            var json:Json = Json.fromObject(jsonObject);
+            json = null;
+            json = Json.fromObject(jsonObject);
 
-            it.should('initialize from a native Loom object', function() {
-                it.expects(json).not.toBeNull();
-            });
-
-            validate(it, json);
+            it.expects(json).not.toBeNull();
+            describeValidInstance();
         }
 
-        private static function validate(it:Thing, json:Json):void
+
+        private static function report_native_types():void
         {
-            it.should('report the native Loom type each value can be extracted as', function() {
-                if (json.keys['key_null']) it.expects(json.keys['key_null'].type).toEqual(Null.getType());
-                it.expects(json.keys['key_bool_true'].type).toEqual(Boolean.getType());
-                it.expects(json.keys['key_string'].type).toEqual(String.getType());
-                it.expects(json.keys['key_number_integer'].type).toEqual(Number.getType());
-                it.expects(json.keys['key_number_real'].type).toEqual(Number.getType());
-                it.expects(json.keys['key_array'].type).toEqual(Vector.getType());
-                it.expects(json.keys['key_object'].type).toEqual(Dictionary.getType());
-            });
+            if (json.keys['key_null']) it.expects(json.keys['key_null'].type).toEqual(Null.getType());
+            it.expects(json.keys['key_bool_true'].type).toEqual(Boolean.getType());
+            it.expects(json.keys['key_string'].type).toEqual(String.getType());
+            it.expects(json.keys['key_number_integer'].type).toEqual(Number.getType());
+            it.expects(json.keys['key_number_real'].type).toEqual(Number.getType());
+            it.expects(json.keys['key_array'].type).toEqual(Vector.getType());
+            it.expects(json.keys['key_object'].type).toEqual(Dictionary.getType());
+        }
 
-            it.should('retrieve native Loom values for the non-collection JSON data types', function() {
-                if (json.keys['key_null']) it.expects(json.keys['key_null'].value).toBeA(Null);
+        private static function get_native_types():void
+        {
+            if (json.keys['key_null']) it.expects(json.keys['key_null'].value).toBeA(Null);
 
-                it.expects(json.keys['key_bool_true'].value).toBeA(Boolean);
-                it.expects(json.keys['key_bool_true'].value).toEqual(true);
+            it.expects(json.keys['key_bool_true'].value).toBeA(Boolean);
+            it.expects(json.keys['key_bool_true'].value).toEqual(true);
 
-                it.expects(json.keys['key_string'].value).toBeA(String);
-                it.expects(json.keys['key_string'].value).toEqual('abcdefg ABCDEFG 0123_4567');
+            it.expects(json.keys['key_string'].value).toBeA(String);
+            it.expects(json.keys['key_string'].value).toEqual('abcdefg ABCDEFG 0123_4567');
 
-                it.expects(json.keys['key_number_integer'].value).toBeA(Number);
-                it.expects(json.keys['key_number_integer'].value).toEqual(1234);
+            it.expects(json.keys['key_number_integer'].value).toBeA(Number);
+            it.expects(json.keys['key_number_integer'].value).toEqual(1234);
 
-                it.expects(json.keys['key_number_real'].value).toBeA(Number);
-                it.expects(json.keys['key_number_real'].value).toEqual(0.9876);
-            });
+            it.expects(json.keys['key_number_real'].value).toBeA(Number);
+            it.expects(json.keys['key_number_real'].value).toEqual(0.9876);
+        }
 
-            it.should('retrieve array elements via items[]', function() {
-                it.expects(json.keys['key_empty_array'].items.length).toEqual(0);
-                it.expects(json.keys['key_array'].items[0].value).toEqual('array_1');
-                it.expects(json.keys['key_nested_arrays'].items[1].items[0].items[0].value).toEqual(4);
-            });
+        private static function get_array_elements_via_items():void
+        {
+            it.expects(json.keys['key_empty_array'].items.length).toEqual(0);
+            it.expects(json.keys['key_array'].items[0].value).toEqual('array_1');
+            it.expects(json.keys['key_nested_arrays'].items[1].items[0].items[0].value).toEqual(4);
+        }
 
-            it.should('retrieve object properties via keys[]', function() {
-                it.expects(json.keys['key_empty_object'].keys.length).toEqual(0);
-                it.expects(json.keys['key_object'].keys['object_1'].value).toEqual(1);
-                it.expects(json.keys['key_nested_in_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
-            });
+        private static function get_object_props_via_keys():void
+        {
+            it.expects(json.keys['key_empty_object'].keys.length).toEqual(0);
+            it.expects(json.keys['key_object'].keys['object_1'].value).toEqual(1);
+            it.expects(json.keys['key_nested_in_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
         }
     }
 }
