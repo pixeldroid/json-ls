@@ -1,0 +1,19 @@
+{
+  "name": "JsonDemoCLI",
+  "version": "1.0",
+  "outputDir": "bin",
+  "references": [
+    "System",
+    "Json"
+  ],
+  "modules": [
+    {
+      "name": "JsonDemoCLI",
+      "version": "1.0",
+      "sourcePath": [
+        "."
+      ]
+    }
+  ],
+  "executable": true
+}

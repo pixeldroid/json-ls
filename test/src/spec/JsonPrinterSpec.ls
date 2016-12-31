@@ -7,41 +7,59 @@ package
     import pixeldroid.json.JsonPrinter;
     import pixeldroid.json.JsonPrinterOptions;
 
+
     public static class JsonPrinterSpec
     {
+        private static const it:Thing = Spec.describe('JsonPrinter');
 
         public static function describe():void
         {
-            var jsonFile:String = 'test/src/assets/json.json';
+            var jsonFile:String = 'fixtures/json.json';
             var jsonString:String = File.loadTextFile(jsonFile);
 
-            var it:Thing = Spec.describe('Pretty-printed string from Json');
-            var json:Json = Json.fromString(jsonString);
+            json = Json.fromString(jsonString);
+
+            it.should('generate a valid JSON string', be_valid_json);
+            it.should('generate a valid JSON string with compact formatting', be_valid_when_compact);
+            it.should('generate a valid JSON string with minified formatting', be_valid_when_minified);
+            it.should('default to standard formatting options', default_to_standard_formatting);
+        }
+
+
+        private static var json:Json;
+
+        private static function be_valid_json():void
+        {
             var prettyString:String = JsonPrinter.print(json);
 
-            it.should('generate a valid JSON string', function() {
-                it.expects(prettyString).not.toBeNull();
-                it.expects(Json.fromString(prettyString)).not.toBeNull();
-            });
+            it.expects(prettyString).not.toBeNull();
+            it.expects(Json.fromString(prettyString)).not.toBeNull();
+        }
 
-            it.should('generate a valid JSON string with compact formatting', function() {
-                var compact:String = JsonPrinter.print(json, JsonPrinterOptions.compact);
-                it.expects(Json.fromString(compact)).not.toBeNull();
-            });
+        private static function be_valid_when_compact():void
+        {
+            var compact:String = JsonPrinter.print(json, JsonPrinterOptions.compact);
 
-            it.should('generate a valid JSON string with minified formatting', function() {
-                var minified:String = JsonPrinter.print(json, JsonPrinterOptions.minified);
-                it.expects(Json.fromString(minified)).not.toBeNull();
-            });
+            it.expects(Json.fromString(compact)).not.toBeNull();
+        }
 
-            it.should('default to standard formatting options', function() {
-                var standard:String = JsonPrinter.print(json, JsonPrinterOptions.standard);
-                it.expects(prettyString == standard).toBeTruthy();
-                // it.expects(prettyString).toEqual(standard);
-                //  ^ this format would generally be preferred,
-                //    but will print the full strings to the log,
-                //    so we use a more basic assertion instead
-            });
+        private static function be_valid_when_minified():void
+        {
+            var minified:String = JsonPrinter.print(json, JsonPrinterOptions.minified);
+
+            it.expects(Json.fromString(minified)).not.toBeNull();
+        }
+
+        private static function default_to_standard_formatting():void
+        {
+            var prettyString:String = JsonPrinter.print(json);
+            var standard:String = JsonPrinter.print(json, JsonPrinterOptions.standard);
+
+            it.expects(prettyString == standard).toBeTruthy();
+            // it.expects(prettyString).toEqual(standard);
+            //  ^ this format would generally be preferred,
+            //    but will print the full strings to the log,
+            //    so we use a more basic assertion instead
         }
 
     }

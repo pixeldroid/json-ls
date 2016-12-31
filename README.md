@@ -3,50 +3,14 @@ json-ls
 
 JSON helpers for Loom
 
-- `Json` - a utility to simplify json data access
-- `JsonPrinter` - a pretty printer for json data
+- [rationale](#rationale)
+- [installation](#installation)
+- [usage](#usage)
+- [building](#building)
+- [contributing](#contributing)
 
 
-## installation
-
-Download the library into its matching sdk folder:
-
-    $ curl -L -o ~/.loom/sdks/sprint34/libs/Json.loomlib \
-        https://github.com/pixeldroid/json-ls/releases/download/v0.0.2/Json-sprint34.loomlib
-
-To uninstall, simply delete the file:
-
-    $ rm ~/.loom/sdks/sprint34/libs/Json.loomlib
-
-
-## usage
-
-0. declare a reference to the Json loomlib in your `.build` file:
-    *
-    ```json
-    "references": [
-        "System",
-        "Json"
-    ],
-    ```
-0. import `pixeldroid.json.Json`
-0. instantiate a new `pixeldroid.json.Json` and call the `fromString()` or `fromObject()` method on it
-0. retrieve values for key / item chains as desired
-0. print to formatted JSON string with JsonPrinter
-
-```ls
-var jsonString:String = File.loadTextFile('assets/json.json');
-var j:Json = Json.fromString(jsonString);
-trace(j.keys['key_name'].items[2].value);
-```
-
-```ls
-var jsonObject:Dictionary.<String, Object> = { "bool": true, "array": [1,23], "string": "one two three" };
-var j:Json = Json.fromObject(jsonObject);
-trace(JsonPrinter.print(j, JsonPrinterOptions.compact));
-```
-
-### Json
+## rationale
 
 Loom provides the [JSON][loom-json] class, which provides strongly typed access to values, requiring  separate accessors for every data type, and two families of these accessors for retrieving from Objects or Arrays. There are 18 basic accessors, and 2 methods for determining type.
 
@@ -132,14 +96,55 @@ No extra whitespace:
 
 see an example of using Json here:
 
-* [JsonDemo.build][JsonDemo.build]
-* [JsonDemo.ls][JsonDemo.ls]
+* [JsonDemoCLI.build][JsonDemoCLI.build]
+* [JsonDemoCLI.ls][JsonDemoCLI.ls]
 
 you can compile and run the demo from the command line:
 
-    $ rake demo:gui
+    $ rake cli
 
-## working from source
+
+## installation
+
+Download the library into its matching sdk folder:
+
+    $ curl -L -o ~/.loom/sdks/sprint34/libs/Json.loomlib \
+        https://github.com/pixeldroid/json-ls/releases/download/v0.0.3/Json-sprint34.loomlib
+
+To uninstall, simply delete the file:
+
+    $ rm ~/.loom/sdks/sprint34/libs/Json.loomlib
+
+
+## usage
+
+0. declare a reference to the Json loomlib in your `.build` file:
+    *
+    ```json
+    "references": [
+        "System",
+        "Json"
+    ],
+    ```
+0. import `pixeldroid.json.Json`
+0. instantiate a new `pixeldroid.json.Json` and call the `fromString()` or `fromObject()` method on it
+0. retrieve values for key / item chains as desired
+0. print to formatted JSON string with JsonPrinter
+
+```ls
+var jsonString:String = File.loadTextFile('assets/json.json');
+var j:Json = Json.fromString(jsonString);
+trace(j.keys['key_name'].items[2].value);
+```
+
+```ls
+var jsonObject:Dictionary.<String, Object> = { "bool": true, "array": [1,23], "string": "one two three" };
+var j:Json = Json.fromObject(jsonObject);
+trace(JsonPrinter.print(j, JsonPrinterOptions.compact));
+```
+
+
+## building
 
 > first install [loomtasks][loomtasks]
 
@@ -163,5 +168,5 @@ Pull requests are welcome!
 
 [loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
 [loom-json]: http://docs.theengine.co/loom/1.1.4813/api/system/JSON.html "Loom JSON class"
-[JsonDemo.build]: ./test/src/JsonDemo.build "build file for the demo"
-[JsonDemo.ls]: ./test/src/JsonDemo.ls "source file for the demo"
+[JsonDemoCLI.build]: ./cli/src/JsonDemoCLI.build "build file for the CLI demo"
+[JsonDemoCLI.ls]: ./cli/src/JsonDemoCLI.ls "source file for the CLI demo"
