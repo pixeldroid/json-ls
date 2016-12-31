@@ -23,7 +23,7 @@ package
 
         private static function describeFromString():void
         {
-            var jsonFile:String = 'test/src/assets/json.json';
+            var jsonFile:String = 'fixtures/json.json';
             var jsonString:String = File.loadTextFile(jsonFile);
 
             var it:Thing = Spec.describe('Json from String');

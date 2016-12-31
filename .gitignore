@@ -1,6 +1,5 @@
-bin/
+cli/bin/
 lib/build/
-logs/
 releases/
 test/bin/
-TEST-*.xml
+test/TEST-*.xml
