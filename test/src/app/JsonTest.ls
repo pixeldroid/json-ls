@@ -7,7 +7,7 @@ package
 
     import JsonSpec;
     import JsonPrinterSpec;
-
+    import YamlPrinterSpec;
 
     public class JsonTest extends ConsoleApplication
     {
@@ -17,7 +17,8 @@ package
 
             var returnCode:Number = SpecExecutor.exec([
                 JsonSpec,
-                JsonPrinterSpec
+                JsonPrinterSpec,
+                YamlPrinterSpec
             ]);
 
             Process.exit(returnCode);
