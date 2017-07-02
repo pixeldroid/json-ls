@@ -189,7 +189,7 @@ you can compile and run the demo from the command line:
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint34/libs/Json.loomlib \
-        https://github.com/pixeldroid/json-ls/releases/download/v0.0.3/Json-sprint34.loomlib
+        https://github.com/pixeldroid/json-ls/releases/download/v1.0.0/Json-sprint34.loomlib
 
 To uninstall, simply delete the file:
 

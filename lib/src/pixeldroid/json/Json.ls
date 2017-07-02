@@ -6,7 +6,7 @@ package pixeldroid.json
 
     public class Json
     {
-        public static const version:String = '0.0.3';
+        public static const version:String = '1.0.0';
 
         static public function fromString(value:String):Json
         {
