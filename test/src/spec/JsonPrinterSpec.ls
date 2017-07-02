@@ -10,10 +10,12 @@ package
 
     public static class JsonPrinterSpec
     {
-        private static const it:Thing = Spec.describe('JsonPrinter');
+        private static var it:Thing;
+        private static var json:Json;
 
-        public static function describe():void
+        public static function specify(specifier:Spec):void
         {
+            it = specifier.describe('JsonPrinter');
             var jsonFile:String = 'fixtures/json.json';
             var jsonString:String = File.loadTextFile(jsonFile);
 
@@ -25,8 +27,6 @@ package
             it.should('default to standard formatting options', default_to_standard_formatting);
         }
 
-
-        private static var json:Json;
 
         private static function be_valid_json():void
         {

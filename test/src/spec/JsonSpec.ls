@@ -8,17 +8,18 @@ package
 
     public static class JsonSpec
     {
-        private static const it:Thing = Spec.describe('Json');
+        private static var it:Thing;
+        private static var json:Json;
 
-        public static function describe():void
+        public static function specify(specifier:Spec):void
         {
+            it = specifier.describe('Json');
+
             it.should('be versioned', be_versioned);
             it.should('initialize from a valid JSON string', init_from_string);
             it.should('initialize from a native Loom object', init_from_object);
         }
 
-
-        private static var json:Json;
 
         private static function describeValidInstance():void
         {
