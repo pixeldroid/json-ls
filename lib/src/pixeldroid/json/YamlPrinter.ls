@@ -6,11 +6,15 @@ package pixeldroid.json
 
     public class YamlPrinter
     {
+        private static const documentStart:String = '---';
+        private static const documentEnd:String = '...';
 
         static public function print(json:Json, options:YamlPrinterOptions = null, indentLevel:Number = 0):String
         {
             if (options == null) options = YamlPrinterOptions.standard;
-            var s:String = options.documentStart + printItem(json, options, indentLevel);
+
+            var s:String = documentStart + printItem(json, options, indentLevel);
+            if (options.printDocumentEnd) s += '\n' + documentEnd;
 
             return s;
         }

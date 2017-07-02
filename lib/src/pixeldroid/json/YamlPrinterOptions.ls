@@ -21,9 +21,9 @@ package pixeldroid.json
         }
 
         public var compactNestingLevel:Number = 0;
-        public var documentStart:String = '---';
         public var fieldSeparator:String = ' ';
         public var itemSeparator:String = '\n';
+        public var printDocumentEnd:Boolean = false;
         public var tabSize:Number = 2;
         public var tightLists:Boolean = false;
     }
