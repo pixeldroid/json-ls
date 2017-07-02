@@ -18,7 +18,7 @@ package
                 'bool': true,
                 'number': 987.6543,
                 'string': "aA bB cC",
-                'array': [1, [23, 45], [67, 89]],
+                'array': [1, [23, 45], [67, [666], [777], 89]],
                 'dictionary': { 'a': [65, 97], 'z': { 'A': 65, 'a': 97 } }
             };
             trace('\nsource:\n' +objectToString(jsonObject));
@@ -42,6 +42,11 @@ package
             trace('\nyaml');
             trace('\nstandard:\n' +YamlPrinter.print(j, YamlPrinterOptions.standard));
             trace('\ncompact:\n' +YamlPrinter.print(j, YamlPrinterOptions.compact));
+            var opts:YamlPrinterOptions = new YamlPrinterOptions();
+            opts.printDocumentEnd = true;
+            opts.tabSize = 4;
+            opts.tightLists = true;
+            trace('\ncustom:\n' +YamlPrinter.print(j, opts));
         }
 
 

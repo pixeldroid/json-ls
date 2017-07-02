@@ -73,6 +73,12 @@ Similar to [jsonlint][jsonlint]:
         ],
         [
             67,
+            [
+                666
+            ],
+            [
+                777
+            ],
             89
         ]
     ],
@@ -99,7 +105,11 @@ A tighter formatting that retains readability:
 
 ```json
 {
-  "array": [ 1, [ 23, 45 ], [ 67, 89 ] ],
+  "array": [
+    1,
+    [ 23, 45 ],
+    [ 67, [ 666 ], [ 777 ], 89 ]
+  ],
   "bool": true,
   "dictionary": {
     "a": [ 65, 97 ],
@@ -116,7 +126,7 @@ A tighter formatting that retains readability:
 No extra whitespace:
 
 ```json
-{"array":[1,[23,45],[67,89]],"bool":true,"dictionary":{"a":[65,97],"z":{"A":65,"a":97}},"nulls":"loom dictionaries delete null values","number":987.6543,"string":"aA bB cC"}
+{"array":[1,[23,45],[67,[666],[777],89]],"bool":true,"dictionary":{"a":[65,97],"z":{"A":65,"a":97}},"nulls":"loom dictionaries delete null values","number":987.6543,"string":"aA bB cC"}
 ```
 
 
@@ -139,6 +149,10 @@ array:
     - 45
   -
     - 67
+    -
+      - 666
+    -
+      - 777
     - 89
 bool: true
 dictionary:
@@ -162,7 +176,7 @@ A tighter formatting similar to [yaml.org][yaml.org]:
 array:
   - 1
   - [ 23, 45 ]
-  - [ 67, 89 ]
+  - [ 67, [ 666 ], [ 777 ], 89 ]
 bool: true
 dictionary:
   a: [ 65, 97 ]
@@ -170,6 +184,34 @@ dictionary:
 nulls: "loom dictionaries delete null values"
 number: 987.6543
 string: "aA bB cC"
+```
+
+#### Custom
+
+Custom formatting can be achieved by configuring the `YamlPrinterOptions` parameter:
+
+```yaml
+---
+array:
+    - 1
+    - - 23
+      - 45
+    - - 67
+      - - 666
+      - - 777
+      - 89
+bool: true
+dictionary:
+    a:
+        - 65
+        - 97
+    z:
+        A: 65
+        a: 97
+nulls: "loom dictionaries delete null values"
+number: 987.6543
+string: "aA bB cC"
+...
 ```
 
 ### JsonDemo
@@ -246,10 +288,10 @@ this will build the Json library, install it in the currently configured sdk, bu
 Pull requests are welcome!
 
 
-[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
-[loom-json]: http://docs.theengine.co/loom/1.1.4813/api/system/JSON.html "Loom JSON class"
 [JsonDemoCLI.build]: ./cli/src/JsonDemoCLI.build "build file for the CLI demo"
 [JsonDemoCLI.ls]: ./cli/src/JsonDemoCLI.ls "source file for the CLI demo"
 [jsonlint]: https://jsonlint.com/ "jsonlint"
-[yamllint]: http://www.yamllint.com/ "yamllint"
+[loom-json]: http://docs.theengine.co/loom/1.1.4813/api/system/JSON.html "Loom JSON class"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
 [yaml.org]: http://www.yaml.org/start.html "yaml.org"
+[yamllint]: http://www.yamllint.com/ "yamllint"
