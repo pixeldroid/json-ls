@@ -59,7 +59,7 @@ package pixeldroid.json
 
             var compactForm:Boolean = (options.compactNestingLevel > 0) && (nestingLevel >= options.compactNestingLevel);
             var tightList:Boolean = ((inList || compactForm) && options.tightLists);
-            var ind:String = indent(indentLevel, options.tabSize);
+            var ident:String = indent(indentLevel, options.tabSize);
             var lines:Vector.<String> = [];
             var n:Number = k.length;
             var i:Number;
@@ -74,15 +74,17 @@ package pixeldroid.json
                     val = d[key];
                     line.push(key + ':' + options.fieldSeparator + printItem(val, options, indentLevel + 1, nestingLevel + 1, true));
                 }
-                lines.push((tightList ? '' : ind) + '{ ' + line.join(',' + options.fieldSeparator) + ' }');
+                lines.push((tightList ? '' : ident) + '{ ' + line.join(',' + options.fieldSeparator) + ' }');
             }
             else
             {
+                var ind:String;
                 for (i = 0; i < n; i++)
                 {
                     key = k[i];
                     val = d[key];
-                    lines.push(((tightList && (i == 0)) ? '' : ind) + key + ':' + options.fieldSeparator + printItem(val, options, indentLevel + 1, nestingLevel + 1));
+                    ind = ((tightList && (i == 0)) ? '' : ident);
+                    lines.push(ind + key + ':' + options.fieldSeparator + printItem(val, options, indentLevel + 1, nestingLevel + 1));
                 }
             }
 
@@ -96,7 +98,7 @@ package pixeldroid.json
 
             var compactForm:Boolean = (options.compactNestingLevel > 0) && (nestingLevel >= options.compactNestingLevel);
             var tightList:Boolean = ((inList || compactForm) && options.tightLists);
-            var ind:String = indent(indentLevel, options.tabSize);
+            var ident:String = indent(indentLevel, options.tabSize);
             var lines:Vector.<String> = [];
             var n:Number = v.length;
             var i:Number;
@@ -110,14 +112,16 @@ package pixeldroid.json
                     val = v[i];
                     line.push(printItem(val, options, indentLevel + 1, nestingLevel + 1, true));
                 }
-                lines.push((tightList ? '' : ind) + '[ ' + line.join(',' + options.fieldSeparator) + ' ]');
+                lines.push((tightList ? '' : ident) + '[ ' + line.join(',' + options.fieldSeparator) + ' ]');
             }
             else
             {
+                var ind:String;
                 for (i = 0; i < n; i++)
                 {
                     val = v[i];
-                    lines.push(((tightList && (i == 0)) ? '' : ind) + '-' + options.fieldSeparator + printItem(val, options, indentLevel + 1, nestingLevel + 1, true));
+                    ind = tightList ? (i == 0 ? '' : indent(indentLevel - 1, options.tabSize) + indent(nestingLevel, 1)) : ident;
+                    lines.push(ind + '-' + options.fieldSeparator + printItem(val, options, indentLevel + 1, nestingLevel + 1, true));
                 }
             }
 
