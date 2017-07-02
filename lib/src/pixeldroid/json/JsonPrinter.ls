@@ -14,7 +14,7 @@ package pixeldroid.json
 
             switch (json.type.getFullName())
             {
-                case 'system.Null' : s = 'null'; break;
+                //   'system.Null' : loom dictionaries delete any keys with values set to null
                 case 'system.Boolean' : s = json.value.toString(); break;
                 case 'system.Number' : s = json.value.toString(); break;
                 case 'system.String' : s = '"' + json.value + '"'; break;
