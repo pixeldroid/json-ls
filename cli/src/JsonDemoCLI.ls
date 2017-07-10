@@ -17,7 +17,8 @@ package
                 'nulls': "loom dictionaries delete null values",
                 'bool': true,
                 'number': 987.6543,
-                'string': "aA bB cC",
+                'string-simple': "aA bB cC",
+                'string-escapes': "\'single quote,\'\n\"double quote\non two lines\"",
                 'array': [1, [23, 45], [67, [666], [777], 89]],
                 'dictionary': { 'a': [65, 97], 'z': { 'A': 65, 'a': 97 } }
             };

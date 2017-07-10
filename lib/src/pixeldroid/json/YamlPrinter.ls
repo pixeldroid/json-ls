@@ -28,7 +28,7 @@ package pixeldroid.json
                 //   'system.Null' : loom dictionaries delete any keys with values set to null
                 case 'system.Boolean' : s = json.value.toString(); break;
                 case 'system.Number' : s = json.value.toString(); break;
-                case 'system.String' : s = '"' + json.value + '"'; break;
+                case 'system.String' : s = stringToYamlString(json.value.toString()); break;
                 case 'system.Vector' : s = vectorToYamlString(options, json.items, indentLevel, nestingLevel, inList); break;
                 case 'system.Dictionary' : s = dictionaryToYamlString(options, json.keys, indentLevel, nestingLevel, inList); break;
             }
@@ -48,6 +48,16 @@ package pixeldroid.json
             }
 
             return s;
+        }
+
+        static private function stringToYamlString(s:String):String
+        {
+            var result:String = s;
+
+            result = result.split('\n').join('\\n');
+            result = result.split('"').join('\\"');
+
+            return '"' +result +'"';
         }
 
         static private function dictionaryToYamlString(options:YamlPrinterOptions, d:Dictionary.<String, Json>, indentLevel:Number, nestingLevel:Number = 0, inList:Boolean = false):String

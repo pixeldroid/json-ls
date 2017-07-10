@@ -17,7 +17,7 @@ package pixeldroid.json
                 //   'system.Null' : loom dictionaries delete any keys with values set to null
                 case 'system.Boolean' : s = json.value.toString(); break;
                 case 'system.Number' : s = json.value.toString(); break;
-                case 'system.String' : s = '"' + json.value + '"'; break;
+                case 'system.String' : s = stringToJsonString(json.value.toString()); break;
                 case 'system.Vector' : s = vectorToJsonString(options, json.items, indentLevel); break;
                 case 'system.Dictionary' : s = dictionaryToJsonString(options, json.keys, indentLevel); break;
             }
@@ -37,6 +37,16 @@ package pixeldroid.json
             }
 
             return s;
+        }
+
+        static private function stringToJsonString(s:String):String
+        {
+            var result:String = s;
+
+            result = result.split('\n').join('\\n');
+            result = result.split('"').join('\\"');
+
+            return '"' +result +'"';
         }
 
         static private function containerToJsonString(options:JsonPrinterOptions, items:Vector.<Object>, indentLevel:Number, openBrace:String, closeBrace:String):String
