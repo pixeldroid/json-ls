@@ -22,6 +22,13 @@ package pixeldroid.json
             return itemToJson(value);
         }
 
+        static public function fromJSON(value:JSON):Json
+        {
+            Debug.assert(value.getJSONType() == JSONType.JSON_OBJECT, "JSON root data type must be Object");
+
+            return JSONObjectToJson(value);
+        }
+
         public var keys:Dictionary.<String, Json> = {};
         public var items:Vector.<Json> = [];
         public var value:Object = null;

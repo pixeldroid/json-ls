@@ -18,6 +18,7 @@ package
             it.should('be versioned', be_versioned);
             it.should('initialize from a valid JSON string', init_from_string);
             it.should('initialize from a native Loom object', init_from_object);
+            it.should('initialize from a Loom JSON object', init_from_loom_json);
             it.should('report the native Loom type each value can be extracted as', report_native_types);
             it.should('retrieve native Loom types for the non-collection JSON types', get_native_types);
             it.should('retrieve array elements via items[]', get_array_elements_via_items);
@@ -93,6 +94,19 @@ package
             it.expects(result.keys.fetch('key_null', 'not found')).toEqual('not found'); // wasn't in in object, so couldn't be put into json
         }
 
+        private static function init_from_loom_json():void
+        {
+            var jsonFile:String = 'fixtures/json.json';
+            var jsonString:String = File.loadTextFile(jsonFile);
+
+            var j:JSON = new JSON();
+            it.asserts(j.loadString(jsonString)).isEqualTo(true).or('json fixture failed to parse');
+
+            var result:Json = Json.fromJSON(j);
+
+            it.asserts(result).isNotNull().or('init from Loom JSON failed');
+            it.expects(result.keys.length).toEqual(13);
+        }
 
         private static function report_native_types():void
         {
