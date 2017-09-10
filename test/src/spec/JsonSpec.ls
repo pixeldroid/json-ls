@@ -23,6 +23,7 @@ package
             it.should('retrieve native Loom types for the non-collection JSON types', get_native_types);
             it.should('retrieve array elements via items[]', get_array_elements_via_items);
             it.should('retrieve object properties via keys[]', get_object_props_via_keys);
+            it.should('provide an object merge utility', merge_objects);
         }
 
 
@@ -161,6 +162,33 @@ package
             it.expects(json.keys['key_empty_object'].keys.length).toEqual(0);
             it.expects(json.keys['key_object'].keys['object_1'].value).toEqual(1);
             it.expects(json.keys['key_nested_multitype_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
+        }
+
+        private static function merge_objects():void
+        {
+            var jsonObject1:Dictionary.<String, Object> = {};
+            var jsonObject2:Dictionary.<String, Object> = {};
+
+            jsonObject1['key_string'] = 'original value';
+
+            jsonObject2['key_string'] = 'overridden value';
+            jsonObject2['key_merged_array'] = ["merged_array"];
+            jsonObject2['key_merged_object'] = {"merged_object": true};
+
+            var j1:Json = Json.fromObject(jsonObject1);
+            var j2:Json = Json.fromObject(jsonObject2);
+
+            it.asserts(j1).isNotNull();
+            it.asserts(j2).isNotNull();
+
+            it.expects(j1.keys.length).toEqual(1);
+            it.expects(j1.keys['key_string'].value).toEqual('original value');
+
+            Json.merge(j1, j2);
+            it.expects(j1.keys.length).toEqual(3);
+            it.expects(j1.keys['key_string'].value).toEqual('overridden value');
+            it.expects(j1.keys['key_merged_array'].value).toBeA(Vector);
+            it.expects(j1.keys['key_merged_object'].value).toBeA(Dictionary);
         }
     }
 }
