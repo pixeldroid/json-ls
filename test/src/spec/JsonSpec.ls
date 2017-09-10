@@ -43,7 +43,8 @@ package
             json = null;
             json = Json.fromString(jsonString);
 
-            it.expects(json).not.toBeNull();
+            it.asserts(json).isNotNull();
+            it.expects(json.keys.length).toEqual(13);
             describeValidInstance();
         }
 
@@ -51,6 +52,7 @@ package
         {
             var jsonObject:Dictionary.<String, Object> = {};
 
+            jsonObject['key_null'] = null; // will not create an entry in the jsonObject dictionary
             jsonObject['key_bool_true'] = true;
             jsonObject['key_bool_false'] = false;
             jsonObject['key_string'] = 'abcdefg ABCDEFG 0123_4567';
@@ -59,14 +61,20 @@ package
 
             jsonObject['key_empty_array'] = [];
             jsonObject['key_array'] = ["array_1", null, "array_3"];
-            jsonObject['key_nested_arrays'] = [
+            jsonObject['key_nested_monotype_array'] = [
                 [1, 2, 3],
                 [[4], [5], [6], null]
+            ];
+            jsonObject['key_nested_multitype_array'] = [
+                [1,2.5,3],
+                {"a":1, "b":2, "c":{"z":"Z"}},
+                null,
+                true
             ];
 
             jsonObject['key_empty_object'] = {};
             jsonObject['key_object'] = {"object_1": 1, "object_2": 2, "object_3": 3};
-            jsonObject['key_nested_in_object'] = {
+            jsonObject['key_nested_multitype_object'] = {
                 "nested_1": [1,2.5,3],
                 "nested_2": {"a":1, "b":2, "c":{"z":"Z"}},
                 "nested_3": null,
@@ -76,7 +84,9 @@ package
             json = null;
             json = Json.fromObject(jsonObject);
 
-            it.expects(json).not.toBeNull();
+            it.asserts(json).isNotNull();
+            it.expects(json.keys.length).toEqual(12);
+            it.expects(json.keys.fetch('key_null', 'not found')).toEqual('not found'); // wasn't in in object, so couldn't be put into json
             describeValidInstance();
         }
 
@@ -107,20 +117,25 @@ package
 
             it.expects(json.keys['key_number_real'].value).toBeA(Number);
             it.expects(json.keys['key_number_real'].value).toEqual(0.9876);
+
+            it.expects(json.keys['key_array'].value).toBeA(Vector);
+            it.expects(json.keys['key_object'].value).toBeA(Dictionary);
         }
 
         private static function get_array_elements_via_items():void
         {
             it.expects(json.keys['key_empty_array'].items.length).toEqual(0);
             it.expects(json.keys['key_array'].items[0].value).toEqual('array_1');
-            it.expects(json.keys['key_nested_arrays'].items[1].items[0].items[0].value).toEqual(4);
+            it.expects(json.keys['key_nested_monotype_array'].items[1].items[0].items[0].value).toEqual(4);
+            it.expects(json.keys['key_nested_multitype_array'].items[1].keys['c'].keys['z'].value).toEqual('Z');
+            it.expects(json.keys['key_nested_multitype_array'].items[3].value).toEqual(true);
         }
 
         private static function get_object_props_via_keys():void
         {
             it.expects(json.keys['key_empty_object'].keys.length).toEqual(0);
             it.expects(json.keys['key_object'].keys['object_1'].value).toEqual(1);
-            it.expects(json.keys['key_nested_in_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
+            it.expects(json.keys['key_nested_multitype_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
         }
     }
 }

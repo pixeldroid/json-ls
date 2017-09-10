@@ -5,31 +5,32 @@
    "key_string": "abcdefg ABCDEFG 0123_4567",
    "key_number_integer": 1234,
    "key_number_real": 0.9876,
+   "key_empty_array": [],
    "key_array": [
       "array_1",
       null,
       "array_3"
    ],
+   "key_nested_monotype_array": [
+      [1, 2, 3],
+      [[4], [5], [6], null]
+   ],
+   "key_nested_multitype_array": [
+      [1,2.5,3],
+      {"a":1, "b":2, "c":{"z":"Z"}},
+      null,
+      true
+   ],
+   "key_empty_object": {},
    "key_object": {
       "object_1": 1,
       "object_2": 2,
       "object_3": 3
    },
-   "key_nested_in_object": {
+   "key_nested_multitype_object": {
       "nested_1": [1,2.5,3],
       "nested_2": {"a":1, "b":2, "c":{"z":"Z"}},
       "nested_3": null,
       "nested_4": true
-   },
-   "key_nested_in_array": [
-      {"a":1.23, "b":45.67},
-      {"x":8, "y":9},
-      {"q":[1,2], "r":[3,4], "n":null}
-   ],
-   "key_nested_arrays": [
-      [1, 2, 3],
-      [[4], [5], [6], null]
-   ],
-   "key_empty_array": [],
-   "key_empty_object": {}
+   }
 }
