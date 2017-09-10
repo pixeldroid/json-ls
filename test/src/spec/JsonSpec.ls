@@ -9,7 +9,7 @@ package
     public static class JsonSpec
     {
         private static var it:Thing;
-        private static var json:Json;
+        private static var _jsonFixture:Json;
 
         public static function specify(specifier:Spec):void
         {
@@ -18,15 +18,23 @@ package
             it.should('be versioned', be_versioned);
             it.should('initialize from a valid JSON string', init_from_string);
             it.should('initialize from a native Loom object', init_from_object);
-        }
-
-
-        private static function describeValidInstance():void
-        {
             it.should('report the native Loom type each value can be extracted as', report_native_types);
             it.should('retrieve native Loom types for the non-collection JSON types', get_native_types);
             it.should('retrieve array elements via items[]', get_array_elements_via_items);
             it.should('retrieve object properties via keys[]', get_object_props_via_keys);
+        }
+
+
+        private static function get jsonFixture():Json
+        {
+            if (!_jsonFixture)
+            {
+                var jsonFile:String = 'fixtures/json.json';
+                var jsonString:String = File.loadTextFile(jsonFile);
+                _jsonFixture = Json.fromString(jsonString);
+            }
+
+            return _jsonFixture;
         }
 
 
@@ -39,13 +47,10 @@ package
         {
             var jsonFile:String = 'fixtures/json.json';
             var jsonString:String = File.loadTextFile(jsonFile);
+            var result:Json = Json.fromString(jsonString);
 
-            json = null;
-            json = Json.fromString(jsonString);
-
-            it.asserts(json).isNotNull();
-            it.expects(json.keys.length).toEqual(13);
-            describeValidInstance();
+            it.asserts(result).isNotNull().or('init from string failed');
+            it.expects(result.keys.length).toEqual(13);
         }
 
         private static function init_from_object():void
@@ -81,18 +86,18 @@ package
                 "nested_4": true
             };
 
-            json = null;
-            json = Json.fromObject(jsonObject);
+            var result:Json = Json.fromObject(jsonObject);
 
-            it.asserts(json).isNotNull();
-            it.expects(json.keys.length).toEqual(12);
-            it.expects(json.keys.fetch('key_null', 'not found')).toEqual('not found'); // wasn't in in object, so couldn't be put into json
-            describeValidInstance();
+            it.asserts(result).isNotNull().or('init from object failed');
+            it.expects(result.keys.length).toEqual(12);
+            it.expects(result.keys.fetch('key_null', 'not found')).toEqual('not found'); // wasn't in in object, so couldn't be put into json
         }
 
 
         private static function report_native_types():void
         {
+            var json:Json = jsonFixture;
+
             if (json.keys['key_null']) it.expects(json.keys['key_null'].type).toEqual(Null.getType());
             it.expects(json.keys['key_bool_true'].type).toEqual(Boolean.getType());
             it.expects(json.keys['key_string'].type).toEqual(String.getType());
@@ -104,6 +109,8 @@ package
 
         private static function get_native_types():void
         {
+            var json:Json = jsonFixture;
+
             if (json.keys['key_null']) it.expects(json.keys['key_null'].value).toBeA(Null);
 
             it.expects(json.keys['key_bool_true'].value).toBeA(Boolean);
@@ -124,6 +131,8 @@ package
 
         private static function get_array_elements_via_items():void
         {
+            var json:Json = jsonFixture;
+
             it.expects(json.keys['key_empty_array'].items.length).toEqual(0);
             it.expects(json.keys['key_array'].items[0].value).toEqual('array_1');
             it.expects(json.keys['key_nested_monotype_array'].items[1].items[0].items[0].value).toEqual(4);
@@ -133,6 +142,8 @@ package
 
         private static function get_object_props_via_keys():void
         {
+            var json:Json = jsonFixture;
+
             it.expects(json.keys['key_empty_object'].keys.length).toEqual(0);
             it.expects(json.keys['key_object'].keys['object_1'].value).toEqual(1);
             it.expects(json.keys['key_nested_multitype_object'].keys['nested_2'].keys['c'].keys['z'].value).toEqual('Z');
