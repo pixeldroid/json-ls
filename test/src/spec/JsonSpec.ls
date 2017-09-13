@@ -52,7 +52,7 @@ package
             var result:Json = Json.fromString(jsonString);
 
             it.asserts(result).isNotNull().or('init from string failed');
-            it.expects(result.keys.length).toEqual(13);
+            it.expects(result.keys.length).toEqual(14);
         }
 
         private static function init_from_object():void
@@ -106,7 +106,7 @@ package
             var result:Json = Json.fromJSON(j);
 
             it.asserts(result).isNotNull().or('init from Loom JSON failed');
-            it.expects(result.keys.length).toEqual(13);
+            it.expects(result.keys.length).toEqual(14);
         }
 
         private static function report_native_types():void
