@@ -57,14 +57,12 @@ package pixeldroid.json
             result = result.split('\\').join('\\\\'); // expand backslash before others
 
             result = result.split('"').join('\\"');
-            result = result.split('\/').join('\\/');
             result = result.split('\b').join('\\b');
-            result = result.split('\f').join('\\f');
             result = result.split('\f').join('\\f');
             result = result.split('\n').join('\\n');
             result = result.split('\r').join('\\r');
             result = result.split('\t').join('\\t');
-            result = result.split('\u').join('\\u');
+            // result = result.split('\u').join('\\u'); // FIXME: need to match \uXXXX (u+4)
 
             return '"' +result +'"';
         }
