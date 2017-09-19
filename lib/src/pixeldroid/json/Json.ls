@@ -6,7 +6,26 @@ package pixeldroid.json
 
     public class Json
     {
-        public static const version:String = '0.0.3';
+        public static const version:String = '1.0.0';
+
+        /**
+        Merges key:value pairs of second parameter into first, overriding any duplicates.
+
+        *Note* this method does not clone non-primitive values.
+        During the merge, new keys in the first Json object will pointed to values in the second.
+        After the merge, modifying values in the second Json object would be the same as modifying them in the first.
+
+        @param j1 Target Json object; will have j2 merged into it
+        @param j2 Json object to merge into j1
+        */
+        static public function merge(j1:Json, j2:Json):void
+        {
+            Debug.assert(j1.type == Dictionary.getType(), "merge operand root data type must be Dictionary");
+            Debug.assert(j2.type == Dictionary.getType(), "merge operand root data type must be Dictionary");
+
+            for (var k:String in j2.keys)
+                j1.keys[k] = j2.keys[k];
+        }
 
         static public function fromString(value:String):Json
         {
@@ -20,6 +39,13 @@ package pixeldroid.json
         static public function fromObject(value:Object):Json
         {
             return itemToJson(value);
+        }
+
+        static public function fromJSON(value:JSON):Json
+        {
+            Debug.assert(value.getJSONType() == JSONType.JSON_OBJECT, "JSON root data type must be Object");
+
+            return JSONObjectToJson(value);
         }
 
         public var keys:Dictionary.<String, Json> = {};

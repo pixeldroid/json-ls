@@ -10,14 +10,12 @@ package
 
     public static class JsonPrinterSpec
     {
-        private static const it:Thing = Spec.describe('JsonPrinter');
+        private static var it:Thing;
+        private static var _jsonFixture:Json;
 
-        public static function describe():void
+        public static function specify(specifier:Spec):void
         {
-            var jsonFile:String = 'fixtures/json.json';
-            var jsonString:String = File.loadTextFile(jsonFile);
-
-            json = Json.fromString(jsonString);
+            it = specifier.describe('JsonPrinter');
 
             it.should('generate a valid JSON string', be_valid_json);
             it.should('generate a valid JSON string with compact formatting', be_valid_when_compact);
@@ -26,10 +24,21 @@ package
         }
 
 
-        private static var json:Json;
+        private static function get jsonFixture():Json
+        {
+            if (!_jsonFixture)
+            {
+                var jsonFile:String = 'fixtures/json.json';
+                var jsonString:String = File.loadTextFile(jsonFile);
+                _jsonFixture = Json.fromString(jsonString);
+            }
+
+            return _jsonFixture;
+        }
 
         private static function be_valid_json():void
         {
+            var json:Json = jsonFixture;
             var prettyString:String = JsonPrinter.print(json);
 
             it.expects(prettyString).not.toBeNull();
@@ -38,6 +47,7 @@ package
 
         private static function be_valid_when_compact():void
         {
+            var json:Json = jsonFixture;
             var compact:String = JsonPrinter.print(json, JsonPrinterOptions.compact);
 
             it.expects(Json.fromString(compact)).not.toBeNull();
@@ -45,6 +55,7 @@ package
 
         private static function be_valid_when_minified():void
         {
+            var json:Json = jsonFixture;
             var minified:String = JsonPrinter.print(json, JsonPrinterOptions.minified);
 
             it.expects(Json.fromString(minified)).not.toBeNull();
@@ -52,6 +63,7 @@ package
 
         private static function default_to_standard_formatting():void
         {
+            var json:Json = jsonFixture;
             var prettyString:String = JsonPrinter.print(json);
             var standard:String = JsonPrinter.print(json, JsonPrinterOptions.standard);
 

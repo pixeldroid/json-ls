@@ -55,20 +55,47 @@ trace(j.keys['key'].items[2].keys['r'].items[1]);
 
 ### JsonPrinter
 
-This library includes a configurable JSON pretty-printer, with three pre-defined configurations for convenience:
+This library includes a configurable JSON pretty-printer, with three pre-defined configurations for convenience.
+
+Other custom configurations are possible by adjusting the values of `JsonPrinterOptions`.
 
 #### Standard
 
-As you would find from jsonlint:
+Similar to [jsonlint][jsonlint]:
 
 ```json
 {
     "array": [
         1,
-        23
+        [
+            23,
+            45
+        ],
+        [
+            67,
+            [
+                666
+            ],
+            [
+                777
+            ],
+            89
+        ]
     ],
     "bool": true,
-    "string": "one two three"
+    "dictionary": {
+        "a": [
+            65,
+            97
+        ],
+        "z": {
+            "A": 65,
+            "a": 97
+        }
+    },
+    "nulls": "loom dictionaries delete null values",
+    "number": 987.6543,
+    "string": "aA bB cC"
 }
 ```
 
@@ -78,9 +105,19 @@ A tighter formatting that retains readability:
 
 ```json
 {
-  "array": [ 1, 23 ],
+  "array": [
+    1,
+    [ 23, 45 ],
+    [ 67, [ 666 ], [ 777 ], 89 ]
+  ],
   "bool": true,
-  "string": "one two three"
+  "dictionary": {
+    "a": [ 65, 97 ],
+    "z": { "A": 65, "a": 97 }
+  },
+  "nulls": "loom dictionaries delete null values",
+  "number": 987.6543,
+  "string": "aA bB cC"
 }
 ```
 
@@ -89,7 +126,92 @@ A tighter formatting that retains readability:
 No extra whitespace:
 
 ```json
-{"array":[1,23],"bool":true,"string":"one two three"}
+{"array":[1,[23,45],[67,[666],[777],89]],"bool":true,"dictionary":{"a":[65,97],"z":{"A":65,"a":97}},"nulls":"loom dictionaries delete null values","number":987.6543,"string":"aA bB cC"}
+```
+
+
+### YamlPrinter
+
+This library includes a configurable YAML pretty-printer, with two pre-defined configurations for convenience:
+
+Other custom configurations are possible by adjusting the values of `YamlPrinterOptions`.
+
+#### Standard
+
+As you would find from [yamllint][yamllint]:
+
+```yaml
+---
+array:
+  - 1
+  -
+    - 23
+    - 45
+  -
+    - 67
+    -
+      - 666
+    -
+      - 777
+    - 89
+bool: true
+dictionary:
+  a:
+    - 65
+    - 97
+  z:
+    A: 65
+    a: 97
+nulls: "loom dictionaries delete null values"
+number: 987.6543
+string: "aA bB cC"
+```
+
+#### Compact
+
+A tighter formatting similar to [yaml.org][yaml.org]:
+
+```yaml
+---
+array:
+  - 1
+  - [ 23, 45 ]
+  - [ 67, [ 666 ], [ 777 ], 89 ]
+bool: true
+dictionary:
+  a: [ 65, 97 ]
+  z: { A: 65, a: 97 }
+nulls: "loom dictionaries delete null values"
+number: 987.6543
+string: "aA bB cC"
+```
+
+#### Custom
+
+Custom formatting can be achieved by configuring the `YamlPrinterOptions` parameter:
+
+```yaml
+---
+array:
+    - 1
+    - - 23
+      - 45
+    - - 67
+      - - 666
+      - - 777
+      - 89
+bool: true
+dictionary:
+    a:
+        - 65
+        - 97
+    z:
+        A: 65
+        a: 97
+nulls: "loom dictionaries delete null values"
+number: 987.6543
+string: "aA bB cC"
+...
 ```
 
 ### JsonDemo
@@ -109,7 +231,7 @@ you can compile and run the demo from the command line:
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint34/libs/Json.loomlib \
-        https://github.com/pixeldroid/json-ls/releases/download/v0.0.3/Json-sprint34.loomlib
+        https://github.com/pixeldroid/json-ls/releases/download/v1.0.0/Json-sprint34.loomlib
 
 To uninstall, simply delete the file:
 
@@ -166,7 +288,10 @@ this will build the Json library, install it in the currently configured sdk, bu
 Pull requests are welcome!
 
 
-[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
-[loom-json]: http://docs.theengine.co/loom/1.1.4813/api/system/JSON.html "Loom JSON class"
 [JsonDemoCLI.build]: ./cli/src/JsonDemoCLI.build "build file for the CLI demo"
 [JsonDemoCLI.ls]: ./cli/src/JsonDemoCLI.ls "source file for the CLI demo"
+[jsonlint]: https://jsonlint.com/ "jsonlint"
+[loom-json]: http://docs.theengine.co/loom/1.1.4813/api/system/JSON.html "Loom JSON class"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[yaml.org]: http://www.yaml.org/start.html "yaml.org"
+[yamllint]: http://www.yamllint.com/ "yamllint"

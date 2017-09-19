@@ -1,6 +1,6 @@
 {
   "name": "Json",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "outputDir": "./build",
   "references": [
     "System"
@@ -8,7 +8,7 @@
   "modules": [
     {
       "name": "Json",
-      "version": "0.0.3",
+      "version": "1.0.0",
       "sourcePath": [
         "."
       ]
